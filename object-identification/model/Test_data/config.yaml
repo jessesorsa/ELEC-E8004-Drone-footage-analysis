@@ -1,0 +1,7 @@
+path: /Users/jessesorsa/Koulu/Urban_lighting_project/Localization/Test_data/datasets
+train: images/train
+val: images/train
+
+# Classes
+names:
+  0: light
