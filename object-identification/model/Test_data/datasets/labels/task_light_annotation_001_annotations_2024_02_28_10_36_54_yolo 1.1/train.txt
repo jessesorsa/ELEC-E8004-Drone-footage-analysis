@@ -1,0 +1,10 @@
+data/obj_train_data/213300_00_2x.jpg
+data/obj_train_data/51252395602_2481f0437e_o.jpg
+data/obj_train_data/51253124606_a94775d5d4_o.jpg
+data/obj_train_data/51253319268_19d07de727_o.jpg
+data/obj_train_data/51253321838_7ca4c0b6e8_o.jpg
+data/obj_train_data/51253872054_1db3b4814b_o.jpg
+data/obj_train_data/51253872314_036bba2e6c_o.jpg
+data/obj_train_data/51253872564_2b9fcfee76_o.jpg
+data/obj_train_data/51254168235_daff26e24a_o.jpg
+data/obj_train_data/51353687915_ababba9fef_o.jpg
