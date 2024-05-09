@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 f = 2.8
-K = 8
+K = 9
 t = 1/6.25
 S = 400
 
@@ -34,8 +34,11 @@ path_4 = os.path.join(
 
 # calculate pixel luminance
 def luminance_equation(r, g, b):
-    Y = (0.2126*r)+(0.7152*g)+(0.0722*b)
-    L = (Y*np.power(f, 2))/(K*t*S)
+    if (r == 255 and g == 0 and b == 0):
+        L = 1000  # Some distinct luminance value
+    else:
+        Y = (0.2126*r)+(0.7152*g)+(0.0722*b)
+        L = (Y*np.power(f, 2))/(K*t*S)
     return L
 
 # determine calibration constant
@@ -47,7 +50,7 @@ def calculate_K(r, g, b, L):
     return K
 
 
-# importing imagex
+# importing images
 def import_img(path):
     img = cv2.imread(path)
     return img
