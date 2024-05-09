@@ -1,0 +1,7 @@
+path: /Volumes/LaCie/ML/urban-lighting-project/project/object-identification/model/datasets/dataset-2
+train: train/images
+val: val/images
+
+# Classes
+names:
+  0: light

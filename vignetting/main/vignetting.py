@@ -4,9 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 f = 2.8
-K = 16
-t = 1/25
-S = 100
+K = 8
+t = 1/6.25
+S = 400
 
 
 # vignetting calibration image path
@@ -14,22 +14,22 @@ vignetting_image_path = os.path.join(
     '/Users/jessesorsa/Koulu/Urban_lighting_project/project/vignetting/images/vignetting.jpg')
 
 # photo_5809671548720758861_y
-image_path_100 = os.path.join(
+image_path_ = os.path.join(
     '/Users/jessesorsa/Koulu/Urban_lighting_project/project/vignetting/images/calibration/photo_5809671548720758867_y.jpg')
 
 # image path (path to image that has a center with 150 luminance)
 image_path_150 = os.path.join(
     '/Users/jessesorsa/Koulu/Urban_lighting_project/project/vignetting/images/calibration/photo_5809671548720758865_y.jpg')
 
-# image paths to cropped red squares (1_93 etc is the known luminance 1.93)
-image_path_red_1 = os.path.join(
-    '/Users/jessesorsa/Koulu/Urban_lighting_project/project/vignetting/images/calibration/red_1_93.png')
-image_path_red_9 = os.path.join(
-    '/Users/jessesorsa/Koulu/Urban_lighting_project/project/vignetting/images/calibration/red_9_6.png')
-image_path_red_36 = os.path.join(
-    '/Users/jessesorsa/Koulu/Urban_lighting_project/project/vignetting/images/calibration/red_36_8.png')
-image_path_red_65 = os.path.join(
-    '/Users/jessesorsa/Koulu/Urban_lighting_project/project/vignetting/images/calibration/red_65_12.png')
+# image paths to known luminancs (1 etc is the known luminance 1)
+path_1_25 = os.path.join(
+    '/Users/jessesorsa/Koulu/Urban_lighting_project/project/pictures/jpeg/CCL1,250.jpg')
+path_2 = os.path.join(
+    '/Users/jessesorsa/Koulu/Urban_lighting_project/project/pictures/jpeg/CCL2,000.jpg')
+path_3 = os.path.join(
+    '/Users/jessesorsa/Koulu/Urban_lighting_project/project/pictures/jpeg/CCL3,000.jpg')
+path_4 = os.path.join(
+    '/Users/jessesorsa/Koulu/Urban_lighting_project/project/pictures/jpeg/CCL4,000.jpg')
 
 
 # calculate pixel luminance
@@ -64,6 +64,10 @@ def print_img(img):
 def plotting_xy(x, y):
     # Plot the points
     plt.plot(x, y, color='red', marker='o', label='Points')
+
+    # Set the axis limits
+    plt.xlim(1, 4.5)
+    plt.ylim(1, 4.5)
 
     # Add labels and title
     plt.xlabel('Measured luminances')
@@ -107,7 +111,7 @@ def print_luminance(luminance_array):
             if (t1 < luminance_array[y, x][0] <= t0):
                 array[y, x] = [34, 222, 248]
 
-            #array[y, x] = scaling_constant * luminance_array[y, x]
+            # array[y, x] = scaling_constant * luminance_array[y, x]
 
     array = np.uint8(array)
     cv2.imshow('image', array)
@@ -205,54 +209,62 @@ def vignetting_correction(luminance_array, calibration_img):
 
 
 # Testing luminance calculations
-red_1 = import_img(image_path_red_1)
-red_9 = import_img(image_path_red_9)
-red_36 = import_img(image_path_red_36)
-red_65 = import_img(image_path_red_65)
+img_1 = import_img(path_1_25)
+img_2 = import_img(path_2)
+img_3 = import_img(path_3)
+img_4 = import_img(path_4)
 
+crop_1 = middle_image_crop(img_1, 20)
+crop_2 = middle_image_crop(img_2, 20)
+crop_3 = middle_image_crop(img_3, 20)
+crop_4 = middle_image_crop(img_4, 20)
 
-print_img(red_1)
-print_img(red_9)
-print_img(red_36)
-print_img(red_65)
+print_img(crop_1)
+print_img(crop_2)
+print_img(crop_3)
+print_img(crop_4)
 
-luminance_1 = luminance(red_1)
-luminance_9 = luminance(red_9)
-luminance_36 = luminance(red_36)
-luminance_65 = luminance(red_65)
+luminance_1 = luminance(crop_1)
+luminance_2 = luminance(crop_2)
+luminance_3 = luminance(crop_3)
+luminance_4 = luminance(crop_4)
 
 mean_luminance_1 = luminance_mean(luminance_1)
-mean_luminance_9 = luminance_mean(luminance_9)
-mean_luminance_36 = luminance_mean(luminance_36)
-mean_luminance_65 = luminance_mean(luminance_65)
+mean_luminance_2 = luminance_mean(luminance_2)
+mean_luminance_3 = luminance_mean(luminance_3)
+mean_luminance_4 = luminance_mean(luminance_4)
 
-L_calculated_array = [mean_luminance_1, mean_luminance_9,
-                      mean_luminance_36, mean_luminance_65]
+L_calculated_array = [mean_luminance_1, mean_luminance_2,
+                      mean_luminance_3, mean_luminance_4]
+
 """
-# These should be around: 1.9, 9.3, 36.8, and 65, if calibration constant is correct
+# These should be around: 1,25, 2, 3, and 4, if calibration constant is correct
 print(mean_luminance_1)
-print(mean_luminance_9)
-print(mean_luminance_36)
-print(mean_luminance_65)
+print(mean_luminance_2)
+print(mean_luminance_3)
+print(mean_luminance_4)
+"""
 
 K_array = np.zeros(4)
 
-b1, g1, r1 = red_1[50, 50]
-b2, g2, r2 = red_9[50, 50]
-b3, g3, r3 = red_36[50, 50]
-b4, g4, r4 = red_65[50, 50]
+b1, g1, r1 = crop_1[10, 10]
+b2, g2, r2 = crop_2[10, 10]
+b3, g3, r3 = crop_3[10, 10]
+b4, g4, r4 = crop_4[10, 10]
 
-K_array[0] = calculate_K(r1, g1, b1, 1.93)
-K_array[1] = calculate_K(r2, g2, b2, 9.6)
-K_array[2] = calculate_K(r3, g3, b3, 36.8)
-K_array[3] = calculate_K(r4, g4, b4, 65.12)
-"""
+K_array[0] = calculate_K(r1, g1, b1, 1.25)
+K_array[1] = calculate_K(r2, g2, b2, 2)
+K_array[2] = calculate_K(r3, g3, b3, 3)
+K_array[3] = calculate_K(r4, g4, b4, 4)
 
-L_array = [1.93, 9.6, 36.8, 65.12]
+print(K_array)
+
+L_array = [1.25, 2, 3, 4]
 
 plotting_xy(L_array, L_calculated_array)
 
 """
+
 ##
 ##
 ##
