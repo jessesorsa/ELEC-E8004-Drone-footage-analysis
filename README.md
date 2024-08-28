@@ -9,6 +9,8 @@ The project included two main parts:
 
 ### Structure
 The complete-model folder includes the final project (other folders were used for development)
+
+Run the software by running runner.py
 The runner.py imports the luminance and ML models, runs both models, and outputs an image where luminance values and bounding boxes are overlayed with the a test image
 
 ### ML model
